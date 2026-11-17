@@ -211,7 +211,7 @@ dialog#rdl,dialog#mdl,dialog#cdl,dialog#pdl,dialog#ldl,dialog#fpd{border-radius:
 <script>
 /* Khóa AI riêng: chỉ bật khi KHÔNG chạy trong khung Claude. Khóa lưu trong localStorage của máy này (tp-ai-cfg), không nằm trong sao lưu. */
 (function(){
-var K='tp-ai-cfg',DEF={anthropic:'claude-sonnet-5-5',openai:'gpt-4o',gemini:'gemini-2.5-flash'},NAME={anthropic:'Claude (Anthropic)',openai:'OpenAI (ChatGPT)',gemini:'Google Gemini'};
+var K='tp-ai-cfg',DEF={anthropic:'claude-sonnet-5-5',openai:'gpt-4o',gemini:'gemini-3.8-flash'},NAME={anthropic:'Claude (Anthropic)',openai:'OpenAI (ChatGPT)',gemini:'Google Gemini'};
 function load(){try{var c=JSON.parse(localStorage.getItem(K)||'null');if(c&&DEF[c.p]&&typeof c.k=='string'&&c.k.length>8)return{p:c.p,k:c.k.trim(),m:(typeof c.m=='string'&&c.m.trim())||DEF[c.p]}}catch(e){}return null}
 function b64(bl){return new Promise(function(res,rej){var r=new FileReader();r.onload=function(){res(String(r.result).split(',')[1])};r.onerror=rej;r.readAsDataURL(bl)})}
 function err(code,detail){var e={code:code};if(detail)e.detail=detail;return e}
@@ -1196,7 +1196,7 @@ function setBU(id){if(!BUD[id]||id==BU)return;BUST[BU]=buSnap();BUP[BU]={pc:{...
  savePrefs();save();sv('tp.bu',BUST);toast('Đã chuyển sang nhánh '+B.n+'.',3000)}
 
 /* ---- v1.0: phiên bản, sao lưu / khôi phục, thông tin hệ thống ---- */
-const APP_VER='1.12.2',APP_BUILD='2026-11-16';
+const APP_VER='1.12.3',APP_BUILD='2026-11-16';
 const bkAll=()=>{const d={};try{for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(/^tp\./.test(k))d[k]=localStorage.getItem(k)}}catch(e){}return d};
 async function bkExport(){const d=bkAll();if(!Object.keys(d).length){toast('Chưa có dữ liệu để sao lưu.');return}const n=new Date(),p=x=>String(x).padStart(2,'0');await saveJSON('sao-luu-transocean-'+n.getFullYear()+p(n.getMonth()+1)+p(n.getDate())+'.json',{app:'tao-poster-transocean-2026',type:'backup',ver:APP_VER,at:n.toISOString(),data:d})}
 function bkImport(txt){let o;try{o=JSON.parse(txt)}catch(e){toast('File không đúng định dạng JSON.');return}if(!o||o.app!='tao-poster-transocean-2026'||o.type!='backup'||!o.data||typeof o.data!='object'){toast('Đây không phải file sao lưu của app này.');return}
