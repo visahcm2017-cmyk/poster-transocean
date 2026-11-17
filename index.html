@@ -249,7 +249,7 @@ window.__aiCfg=function(){
  var key=el('input',{id:'kaik',type:'password',autocomplete:'off',spellcheck:false,placeholder:'Dán khóa API',value:c.k,'aria-label':'Khóa API'});
  var mod=el('input',{id:'kaim',type:'text',spellcheck:false,'aria-label':'Tên mô hình'});
  function ph(){mod.placeholder='Mặc định: '+DEF[sel.value];}
- mod.value=load()?c.m:'';ph();sel.onchange=ph;
+ mod.value=load()&&c.m!=DEF[c.p]?c.m:'';ph();sel.onchange=function(){if(Object.keys(DEF).some(function(k){return DEF[k]==mod.value}))mod.value='';ph()};
  [sel,key,mod].forEach(function(x){x.style.cssText='width:100%;box-sizing:border-box;padding:8px;margin:4px 0 10px;border:1px solid #99a;border-radius:8px;font:inherit'});
  var st=el('p',{id:'kaist',style:'min-height:1.4em;margin:6px 0;font-size:13px'});
  function cfgNow(){return{p:sel.value,k:key.value.trim(),m:mod.value.trim()}}
@@ -1196,7 +1196,7 @@ function setBU(id){if(!BUD[id]||id==BU)return;BUST[BU]=buSnap();BUP[BU]={pc:{...
  savePrefs();save();sv('tp.bu',BUST);toast('Đã chuyển sang nhánh '+B.n+'.',3000)}
 
 /* ---- v1.0: phiên bản, sao lưu / khôi phục, thông tin hệ thống ---- */
-const APP_VER='1.12.1',APP_BUILD='2026-11-16';
+const APP_VER='1.12.2',APP_BUILD='2026-11-16';
 const bkAll=()=>{const d={};try{for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(/^tp\./.test(k))d[k]=localStorage.getItem(k)}}catch(e){}return d};
 async function bkExport(){const d=bkAll();if(!Object.keys(d).length){toast('Chưa có dữ liệu để sao lưu.');return}const n=new Date(),p=x=>String(x).padStart(2,'0');await saveJSON('sao-luu-transocean-'+n.getFullYear()+p(n.getMonth()+1)+p(n.getDate())+'.json',{app:'tao-poster-transocean-2026',type:'backup',ver:APP_VER,at:n.toISOString(),data:d})}
 function bkImport(txt){let o;try{o=JSON.parse(txt)}catch(e){toast('File không đúng định dạng JSON.');return}if(!o||o.app!='tao-poster-transocean-2026'||o.type!='backup'||!o.data||typeof o.data!='object'){toast('Đây không phải file sao lưu của app này.');return}
